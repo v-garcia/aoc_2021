@@ -6,3 +6,5 @@ eval `opam config env` # may not be needed
 https://github.com/0install/0install/blob/master/src/solver/sat.ml
 
 https://ocaml.org/learn/tutorials/99problems.html
+
+https://gist.github.com/linstantnoodles/3772731
