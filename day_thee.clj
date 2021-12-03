@@ -25,13 +25,13 @@
 (def power-consumption (* gamma-rate epsilon-rate))
 
 (defn get-rate'
-  [d op]
+  [op]
   (reduce (fn [acc i]
             (let [c              ({false 0 true 1} (op (sum-bits acc i) (/ (count acc) 2)))
                   [a & r :as l]  (filter #(= c (bit-at i %)) acc)]
               (if (empty r) (reduced a) l))) input (range 0 12)))
 
 
-(def oxigen-rating (get-rate' 1 <))
-(def co2-scrubber-rating (get-rate' 0 >))
+(def oxigen-rating (get-rate' <=))
+(def co2-scrubber-rating (get-rate' >))
 (def life-support-rating (* oxigen-rating co2-scrubber-rating))
