@@ -5,21 +5,33 @@
    clojure.string/split-lines
    (map #(read-string (str "2r" %)))))
 
+(defn bit-at
+  [i val]
+  (bit-and 1 (bit-shift-right val (- 11 i))))
 
-(defn sum-bits [i]
-  (->>
-   input
-   (mapv #(->> (bit-shift-right % (- 11 i)) (bit-and 1)))
-   (apply +)))
+(defn sum-bits [vals i]
+  (->> vals (mapv (partial bit-at i)) (apply +)))
 
 (defn get-rate
   [op]
   (->>
    (range 0 12)
-   (map #(if (op (sum-bits %) (/ (count input) 2)) 0 1))
+   (map #(if (op (sum-bits input %) (/ (count input) 2)) 0 1))
    (apply str "2r")
    read-string))
 
 (def gamma-rate (get-rate <))
 (def epsilon-rate (get-rate >))
 (def power-consumption (* gamma-rate epsilon-rate))
+
+(defn get-rate'
+  [d op]
+  (reduce (fn [acc i]
+            (let [c              ({false 0 true 1} (op (sum-bits acc i) (/ (count acc) 2)))
+                  [a & r :as l]  (filter #(= c (bit-at i %)) acc)]
+              (if (empty r) (reduced a) l))) input (range 0 12)))
+
+
+(def oxigen-rating (get-rate' 1 <))
+(def co2-scrubber-rating (get-rate' 0 >))
+(def life-support-rating (* oxigen-rating co2-scrubber-rating))
