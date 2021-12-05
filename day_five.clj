@@ -25,7 +25,7 @@
    input
    (filter (some-fn horizontal? vertical?))
    (mapcat expand-line)
-   (reduce (fn [acc v] (update acc v (fnil inc 0))) {})
+   frequencies
    vals
    (filter (partial < 1))
    count))
@@ -37,7 +37,7 @@
    input
    (filter (some-fn horizontal? vertical? diagonal?))
    (mapcat expand-line)
-   (reduce (fn [acc v] (update acc v (fnil inc 0))) {})
+   frequencies
    vals
    (filter (partial < 1))
    count))
