@@ -5,11 +5,11 @@
 (def input (as-> (slurp "day_seven_input.txt") % (str/trim %) (str/split % #",") (mapv #(Integer. %) %)))
 
 (defn get-pos->fuel
-  [compare-fn]
+  [fn-cost]
   (->>
    (reduce
     (fn [acc b]
-      (assoc acc b (->> input (map (partial compare-fn b)) (apply +))))
+      (assoc acc b (->> input (map (partial fn-cost b)) (apply +))))
     {} (range 0 1001))))
 
 ;; Q1
